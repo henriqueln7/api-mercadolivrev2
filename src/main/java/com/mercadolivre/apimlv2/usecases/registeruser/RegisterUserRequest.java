@@ -25,4 +25,11 @@ public class RegisterUserRequest {
     public User toModel() {
         return new User(this.login, new CleanPassword(this.password));
     }
+
+    /**
+     * @return Login. This method is necessary so SpringMVC can validate correctly.
+     */
+    public String getLogin() {
+        return login;
+    }
 }
