@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class CleanPassword {
+
     @NotBlank
     @Size(min = 6)
     private final String password;
