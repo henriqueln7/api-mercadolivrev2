@@ -1,18 +1,20 @@
 package com.mercadolivre.apimlv2.usecases.registercategory;
 
+import com.mercadolivre.apimlv2.domain.Category;
+import com.mercadolivre.apimlv2.domain.CategoryRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.List;
+import java.util.Optional;
 
+@Component
 public class CategoryUniqueNameValidator implements Validator {
 
-    private final EntityManager manager;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryUniqueNameValidator(EntityManager manager) {
-        this.manager = manager;
+    public CategoryUniqueNameValidator(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -27,10 +29,10 @@ public class CategoryUniqueNameValidator implements Validator {
         }
 
         NewCategoryRequest request = (NewCategoryRequest) target;
-        Query query = manager.createQuery("SELECT 1 FROM Category c WHERE c.name = :name")
-                            .setParameter("name", request.name);
-        List<?> result = query.getResultList();
-        if (!result.isEmpty()) {
+
+        Optional<Category> optionalCategory = categoryRepository.findByName(request.name);
+
+        if (optionalCategory.isPresent()) {
             errors.rejectValue("name", "", "Name already exists");
         }
     }

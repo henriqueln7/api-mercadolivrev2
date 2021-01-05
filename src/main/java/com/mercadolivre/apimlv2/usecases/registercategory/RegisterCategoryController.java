@@ -19,10 +19,15 @@ public class RegisterCategoryController {
 
     @PersistenceContext
     private EntityManager manager;
+    private final CategoryUniqueNameValidator categoryUniqueNameValidator;
+
+    public RegisterCategoryController(CategoryUniqueNameValidator categoryUniqueNameValidator) {
+        this.categoryUniqueNameValidator = categoryUniqueNameValidator;
+    }
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(new CategoryUniqueNameValidator(manager));
+        binder.addValidators(categoryUniqueNameValidator);
     }
 
     @PostMapping("/categories")
