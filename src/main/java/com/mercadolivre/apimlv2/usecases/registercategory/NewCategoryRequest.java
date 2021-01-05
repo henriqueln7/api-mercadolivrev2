@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.mercadolivre.apimlv2.domain.Category;
 
 import javax.validation.constraints.NotBlank;
+import java.util.function.Function;
 
 public class NewCategoryRequest {
     @NotBlank
@@ -16,8 +17,13 @@ public class NewCategoryRequest {
         this.parentCategoryId = parentCategoryId;
     }
 
-    public Category toModel() {
-        return new Category(this.name);
+    public Category toModel(Function<Long, Category> findCategoryById) {
+        Category category = new Category(this.name);
+        if (this.parentCategoryId != null) {
+            Category parentCategory = findCategoryById.apply(this.parentCategoryId);
+            category.addParentCategory(parentCategory);
+        }
+        return category;
     }
 
     @Override
