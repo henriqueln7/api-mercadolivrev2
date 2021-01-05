@@ -20,7 +20,7 @@ public class RegisterCategoryController {
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(new CategoryUniqueNameValidator());
+        binder.addValidators(new CategoryUniqueNameValidator(manager));
     }
 
     @PostMapping("/categories")

@@ -7,8 +7,8 @@ import javax.validation.constraints.NotBlank;
 
 public class NewCategoryRequest {
     @NotBlank
-    private String name;
-    private Long parentCategoryId;
+    public final String name;
+    public final Long parentCategoryId;
 
     @JsonCreator
     public NewCategoryRequest(@NotBlank String name, Long parentCategoryId) {
@@ -26,5 +26,13 @@ public class NewCategoryRequest {
                 "name='" + name + '\'' +
                 ", parentCategoryId=" + parentCategoryId +
                 '}';
+    }
+
+    /**
+     *
+     * @return category name, so SpringMVC can build errors properly
+     */
+    public String getName() {
+        return name;
     }
 }
