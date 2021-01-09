@@ -6,3 +6,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/apimlv2
     username: postgres
     password: postgres
+jwt:
+  secret: jdk02kdadnjndiawd
+  expTime: 86400
