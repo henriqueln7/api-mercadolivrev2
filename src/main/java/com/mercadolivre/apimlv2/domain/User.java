@@ -28,4 +28,12 @@ public class User {
         this.login = login;
         this.createdAt = LocalDate.now();
     }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
