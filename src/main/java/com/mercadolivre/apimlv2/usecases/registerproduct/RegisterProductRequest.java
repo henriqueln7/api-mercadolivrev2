@@ -1,7 +1,12 @@
 package com.mercadolivre.apimlv2.usecases.registerproduct;
 
+import com.mercadolivre.apimlv2.domain.Category;
+import com.mercadolivre.apimlv2.domain.User;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.util.Assert;
 
+import javax.persistence.EntityManager;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -44,5 +49,12 @@ public class RegisterProductRequest {
                 ", description='" + description + '\'' +
                 ", categoryId=" + categoryId +
                 '}';
+    }
+
+    public Product toModel(@Valid @NotNull User owner, EntityManager manager) {
+        Category category = manager.find(Category.class, this.categoryId);
+        Assert.notNull(category, "Category cannot be null");
+
+        return new Product(this.name, this.price, this.amountAvailable, this.features, this.description, category, owner);
     }
 }
