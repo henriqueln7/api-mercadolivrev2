@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Set;
@@ -25,6 +26,8 @@ public class RegisterProductRequest {
     private final BigDecimal price;
     @Positive
     private final int amountAvailable;
+    @Size(min = 3)
+    @Valid
     private final Set<NewFeatureRequest> features;
     @NotBlank
     @Length(max = 1000)
@@ -32,7 +35,7 @@ public class RegisterProductRequest {
     @NotNull
     private final Long categoryId;
 
-    public RegisterProductRequest(@NotBlank String name, @NotNull @Positive BigDecimal price, @Positive int amountAvailable, Set<NewFeatureRequest> features, @NotBlank @Length(max = 1000) String description, @NotNull Long categoryId) {
+    public RegisterProductRequest(@NotBlank String name, @NotNull @Positive BigDecimal price, @Positive int amountAvailable, @Size(min = 3) @Valid Set<NewFeatureRequest> features, @NotBlank @Length(max = 1000) String description, @NotNull Long categoryId) {
         this.name = name;
         this.price = price;
         this.amountAvailable = amountAvailable;
@@ -53,14 +56,18 @@ public class RegisterProductRequest {
                 '}';
     }
 
+    public Set<NewFeatureRequest> getFeatures() {
+        return features;
+    }
+
     public Product toModel(@Valid @NotNull User owner, EntityManager manager) {
         Category category = manager.find(Category.class, this.categoryId);
         Assert.notNull(category, "Category cannot be null");
 
-        Set<ProductFeature> features = this.features.stream()
+        Set<ProductFeature> productFeatures = this.features.stream()
                                                     .map(NewFeatureRequest::toModel)
                                                     .collect(Collectors.toSet());
-        return new Product(this.name, this.price, this.amountAvailable, features, this.description, category, owner);
+        return new Product(this.name, this.price, this.amountAvailable, productFeatures, this.description, category, owner);
     }
 }
 
@@ -73,6 +80,14 @@ class NewFeatureRequest {
     public NewFeatureRequest(@NotBlank String name, @NotBlank String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override
