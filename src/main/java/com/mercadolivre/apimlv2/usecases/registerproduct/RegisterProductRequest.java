@@ -56,6 +56,10 @@ public class RegisterProductRequest {
                 '}';
     }
 
+    /**
+     *
+     * @return features to Jackson show errors properly
+     */
     public Set<NewFeatureRequest> getFeatures() {
         return features;
     }
