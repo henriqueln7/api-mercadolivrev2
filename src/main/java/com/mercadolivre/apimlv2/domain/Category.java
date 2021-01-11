@@ -30,4 +30,8 @@ public class Category {
         Assert.isTrue(Optional.ofNullable(this.parentCategory).isEmpty(), "This category already has a parent");
         this.parentCategory = parentCategory;
     }
+
+    public String getName() {
+        return name;
+    }
 }

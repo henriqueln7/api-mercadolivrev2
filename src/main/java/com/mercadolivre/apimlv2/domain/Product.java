@@ -1,5 +1,6 @@
 package com.mercadolivre.apimlv2.domain;
 
+import io.jsonwebtoken.lang.Assert;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,6 +54,43 @@ public class Product {
         this.category = category;
         this.owner = owner;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        Assert.notNull(this.id, "ID is null. Perhaps object was not persisted");
+        return this.id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public int getAmountAvailable() {
+        return amountAvailable;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Set<ProductFeature> getFeatures() {
+        return Collections.unmodifiableSet(features);
     }
 }
 
