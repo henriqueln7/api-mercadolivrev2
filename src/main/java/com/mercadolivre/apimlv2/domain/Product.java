@@ -1,7 +1,5 @@
-package com.mercadolivre.apimlv2.usecases.registerproduct;
+package com.mercadolivre.apimlv2.domain;
 
-import com.mercadolivre.apimlv2.domain.Category;
-import com.mercadolivre.apimlv2.domain.User;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -12,12 +10,15 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @NotBlank
@@ -26,9 +27,9 @@ public class Product {
     private BigDecimal price;
     @Positive
     private int amountAvailable;
-    @Size(min = 3)
-    @ElementCollection
-    private Set<String> features;
+    @Size(min = 3) @Valid
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private Set<ProductFeature> features = new HashSet<>();
     @NotBlank @Length(max = 1000)
     private String description;
     @Valid @NotNull
@@ -42,14 +43,15 @@ public class Product {
     @Deprecated
     protected Product(){}
 
-    public Product(@NotBlank String name, @NotNull @Positive BigDecimal price, @Positive int amountAvailable, @Size(min = 3) Set<String> features, @NotBlank @Length(max = 1000) String description, @Valid @NotNull Category category, @Valid @NotNull User owner) {
+    public Product(@NotBlank String name, @NotNull @Positive BigDecimal price, @Positive int amountAvailable, @Size(min = 3) @Valid Set<ProductFeature> features, @NotBlank @Length(max = 1000) String description, @Valid @NotNull Category category, @Valid @NotNull User owner) {
         this.name = name;
         this.price = price;
         this.amountAvailable = amountAvailable;
-        this.features = features;
+        this.features.addAll(features);
         this.description = description;
         this.category = category;
         this.owner = owner;
         this.createdAt = LocalDateTime.now();
     }
 }
+

@@ -1,5 +1,6 @@
 package com.mercadolivre.apimlv2.usecases.registerproduct;
 
+import com.mercadolivre.apimlv2.domain.Product;
 import com.mercadolivre.apimlv2.domain.User;
 import com.mercadolivre.apimlv2.security.LoggedUser;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
