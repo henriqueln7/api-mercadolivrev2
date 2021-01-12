@@ -24,8 +24,7 @@ public class TokenManager {
         UserDetails user = (UserDetails) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expiration = new Date(new Date().getTime() + timeToExpireInSeconds);
-
+        Date expiration = new Date(new Date().getTime() + timeToExpireInSeconds * 1000);
         return Jwts.builder()
                    .setIssuer("API MercadoLivre")
                    .setSubject(user.getUsername())
