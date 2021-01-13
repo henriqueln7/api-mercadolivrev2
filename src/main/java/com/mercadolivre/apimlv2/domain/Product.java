@@ -1,7 +1,7 @@
 package com.mercadolivre.apimlv2.domain;
 
-import io.jsonwebtoken.lang.Assert;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -41,6 +42,8 @@ public class Product {
     @ManyToOne
     private User owner;
     private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    private final Set<ProductImage> images = new HashSet<>();
 
     @Deprecated
     protected Product(){}
@@ -92,5 +95,18 @@ public class Product {
     public Set<ProductFeature> getFeatures() {
         return Collections.unmodifiableSet(features);
     }
+
+    public boolean belongsTo(User owner) {
+        return this.owner.equals(owner);
+    }
+
+    public void addImagesUrl(@NotNull @Size(min = 1) Set<String> imagesUrl) {
+        Assert.isTrue(!imagesUrl.isEmpty(), "The set has to contain at least 1 element");
+        Set<ProductImage> images = imagesUrl.stream()
+                                             .map(imageUrl -> new ProductImage(this, imageUrl))
+                                             .collect(Collectors.toSet());
+        this.images.addAll(images);
+    }
+
 }
 
