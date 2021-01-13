@@ -3,6 +3,7 @@ package com.mercadolivre.apimlv2.usecases.addimagetoproduct;
 import com.mercadolivre.apimlv2.domain.Product;
 import com.mercadolivre.apimlv2.domain.User;
 import com.mercadolivre.apimlv2.security.LoggedUser;
+import com.mercadolivre.apimlv2.shared.imageupload.ImageUploader;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,12 @@ public class AddImageToProductController {
     @PersistenceContext
     private EntityManager manager;
 
+    private final ImageUploader imageUploader;
+
+    public AddImageToProductController(ImageUploader imageUploader) {
+        this.imageUploader = imageUploader;
+    }
+
     @PostMapping("/products/{productId}/images")
     @Transactional
     public void addImages(@PathVariable Long productId,
@@ -38,8 +45,7 @@ public class AddImageToProductController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have access to this operation");
         }
 
-        ImageUploader uploader = new ImageUploader();
-        Set<String> imagesUrl = uploader.upload(request.getImages());
+        Set<String> imagesUrl = imageUploader.upload(request.getImages());
 
         product.addImagesUrl(imagesUrl);
         manager.merge(product);
