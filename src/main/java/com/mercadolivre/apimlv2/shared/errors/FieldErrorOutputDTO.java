@@ -1,4 +1,4 @@
-package com.mercadolivre.apimlv2.shared;
+package com.mercadolivre.apimlv2.shared.errors;
 
 public class FieldErrorOutputDTO {
     private String field;
