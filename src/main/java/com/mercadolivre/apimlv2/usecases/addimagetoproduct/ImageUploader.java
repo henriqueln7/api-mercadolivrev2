@@ -1,4 +1,4 @@
-package com.mercadolivre.apimlv2.usecases.registerproduct;
+package com.mercadolivre.apimlv2.usecases.addimagetoproduct;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
