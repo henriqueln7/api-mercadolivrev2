@@ -6,10 +6,7 @@ import com.mercadolivre.apimlv2.domain.User;
 import com.mercadolivre.apimlv2.security.LoggedUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
@@ -25,6 +22,7 @@ public class AddOpinionToProductController {
 
     @PostMapping("/products/{productId}/opinions")
     @Transactional
+    @ResponseStatus(HttpStatus.CREATED)
     public void addOpinion(@PathVariable("productId") Long productId,
                            @Valid @RequestBody AddOpinionToProductRequest request,
                            @AuthenticationPrincipal LoggedUser loggedUser) {

@@ -12,12 +12,12 @@ import javax.validation.constraints.Size;
 public class AddOpinionToProductRequest {
     @Min(1)
     @Max(5)
-    private final int score;
+    public final int score;
     @NotBlank
-    private final String title;
+    public final String title;
     @NotBlank
     @Size(max = 500)
-    private final String description;
+    public final String description;
 
     public AddOpinionToProductRequest(@Min(1) @Max(5) int score, @NotBlank String title, @NotBlank @Size(max = 500) String description) {
         this.score = score;
