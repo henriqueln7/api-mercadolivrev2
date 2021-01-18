@@ -23,10 +23,17 @@ public class NewQuestionController {
     @PersistenceContext
     private EntityManager manager;
 
+    private final Mailer mailer;
+
+    public NewQuestionController(Mailer mailer) {
+        this.mailer = mailer;
+    }
+
     @PostMapping("/products/{productId}/questions")
     @Transactional
     public void newQuestion(@PathVariable("productId") Long productId, @AuthenticationPrincipal LoggedUser loggedUser, @Valid @RequestBody NewQuestionRequest request) {
         Product product = manager.find(Product.class, productId);
+
         if (product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with passed ID does not exists");
         }
@@ -34,5 +41,6 @@ public class NewQuestionController {
         User questioner = loggedUser.get();
         Question newQuestion = request.toModel(questioner, product);
         manager.persist(newQuestion);
+        mailer.sendText(questioner.getLogin(), "[MercadoLivre] New question about your product", "Hi! We have a new question about your product: \n " + newQuestion.getTitle());
     }
 }

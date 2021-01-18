@@ -36,4 +36,8 @@ public class Question {
     public void setBody(String body) {
         this.body = body;
     }
+
+    public String getTitle() {
+        return title;
+    }
 }
