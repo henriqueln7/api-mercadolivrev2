@@ -14,6 +14,7 @@ public class Question {
 
     @NotBlank
     private String title;
+    private String body;
     @NotNull @Valid
     @ManyToOne
     private User questioner;
@@ -26,8 +27,13 @@ public class Question {
     protected Question(){}
     public Question(@NotBlank String title, @NotNull @Valid User questioner, @NotNull @Valid Product product) {
         this.title = title;
+        this.body = body;
         this.questioner = questioner;
         this.product = product;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

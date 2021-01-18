@@ -2,6 +2,7 @@ package com.mercadolivre.apimlv2.usecases.addquestiontoproduct;
 
 import com.mercadolivre.apimlv2.domain.Product;
 import com.mercadolivre.apimlv2.domain.Question;
+import com.mercadolivre.apimlv2.domain.User;
 import com.mercadolivre.apimlv2.security.LoggedUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +31,8 @@ public class NewQuestionController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with passed ID does not exists");
         }
 
-        Question newQuestion = new Question(request.title, loggedUser.get(), product);
+        User questioner = loggedUser.get();
+        Question newQuestion = request.toModel(questioner, product);
         manager.persist(newQuestion);
     }
 }
