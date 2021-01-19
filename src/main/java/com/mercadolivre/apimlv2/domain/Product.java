@@ -88,6 +88,14 @@ public class Product {
         return owner;
     }
 
+    public Set<ProductImage> getImages() {
+        return Collections.unmodifiableSet(images);
+    }
+
+    public List<Opinion> getOpinions() {
+        return Collections.unmodifiableList(opinions);
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
