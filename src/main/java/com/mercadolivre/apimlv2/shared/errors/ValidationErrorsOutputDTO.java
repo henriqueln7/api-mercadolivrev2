@@ -1,4 +1,4 @@
-package com.mercadolivre.apimlv2.shared;
+package com.mercadolivre.apimlv2.shared.errors;
 
 import java.util.ArrayList;
 import java.util.List;
