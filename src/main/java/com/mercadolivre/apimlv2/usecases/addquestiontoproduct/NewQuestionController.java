@@ -23,10 +23,10 @@ public class NewQuestionController {
     @PersistenceContext
     private EntityManager manager;
 
-    private final Mailer mailer;
+    private final SendMailNewQuestion sendMailNewQuestion;
 
-    public NewQuestionController(Mailer mailer) {
-        this.mailer = mailer;
+    public NewQuestionController(SendMailNewQuestion sendMailNewQuestion) {
+        this.sendMailNewQuestion = sendMailNewQuestion;
     }
 
     @PostMapping("/products/{productId}/questions")
@@ -40,7 +40,8 @@ public class NewQuestionController {
 
         User questioner = loggedUser.get();
         Question newQuestion = request.toModel(questioner, product);
+
         manager.persist(newQuestion);
-        mailer.sendText(questioner.getLogin(), "[MercadoLivre] New question about your product", "Hi! We have a new question about your product: \n " + newQuestion.getTitle());
+        sendMailNewQuestion.send(newQuestion);
     }
 }

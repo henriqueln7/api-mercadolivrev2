@@ -27,7 +27,6 @@ public class Question {
     protected Question(){}
     public Question(@NotBlank String title, @NotNull @Valid User questioner, @NotNull @Valid Product product) {
         this.title = title;
-        this.body = body;
         this.questioner = questioner;
         this.product = product;
         this.createdAt = LocalDateTime.now();
@@ -39,5 +38,9 @@ public class Question {
 
     public String getTitle() {
         return title;
+    }
+
+    public User getQuestioner() {
+        return questioner;
     }
 }
