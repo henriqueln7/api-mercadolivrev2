@@ -11,9 +11,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -44,6 +42,8 @@ public class Product {
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
     private final Set<ProductImage> images = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    private List<Opinion> opinions = new ArrayList<>();
 
     @Deprecated
     protected Product(){}
@@ -108,5 +108,9 @@ public class Product {
         this.images.addAll(images);
     }
 
+    public void addOpinion(@Valid @NotNull Opinion opinion) {
+        Assert.notNull(opinion, "Opinion is null #BUG");
+        this.opinions.add(opinion);
+    }
 }
 
