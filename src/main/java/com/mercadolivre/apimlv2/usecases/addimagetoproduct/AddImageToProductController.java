@@ -25,8 +25,11 @@ public class AddImageToProductController {
 
     private final ImageUploader imageUploader;
 
-    public AddImageToProductController(ImageUploader imageUploader) {
+    private final AddRepository addRepository;
+
+    public AddImageToProductController(ImageUploader imageUploader, AddRepository addRepository) {
         this.imageUploader = imageUploader;
+        this.addRepository = addRepository;
     }
 
     @PostMapping("/products/{productId}/images")
@@ -34,7 +37,7 @@ public class AddImageToProductController {
     public void addImages(@PathVariable Long productId,
                           @Valid AddImagesProductRequest request,
                           @AuthenticationPrincipal LoggedUser loggedUser) {
-        Product product = manager.find(Product.class, productId);
+        Product product = addRepository.find(productId);
         if (product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exists");
         }

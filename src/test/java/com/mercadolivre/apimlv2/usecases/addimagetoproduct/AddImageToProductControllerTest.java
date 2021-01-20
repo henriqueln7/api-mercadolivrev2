@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -28,6 +29,15 @@ class AddImageToProductControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    private AddRepository addRepository;
+
+    @MockBean
+    private EntityManager entityManager;
+
+//    @Autowired
+//    private MockMvc mvc;
     @Autowired
     private ObjectMapper mapper;
 
@@ -57,10 +67,11 @@ class AddImageToProductControllerTest {
 
         Product product = new Product("Product", BigDecimal.TEN, 3, features, "Description", category, owner);
 
-        EntityManager entityManager = Mockito.mock(EntityManager.class);
+//         entityManager = Mockito.mock(EntityManager.class);
 
         long productId = 1L;
-        Mockito.when(entityManager.find(Product.class, productId)).thenReturn(product);
+//        Mockito.when(entityManager.find(Mockito.any(), Mockito.any())).thenReturn(product);
+        Mockito.when(addRepository.find(Mockito.anyLong())).thenReturn(product);
 
         MockMultipartFile file = new MockMultipartFile("images", "ad", MediaType.IMAGE_PNG_VALUE, new byte[1]);
 
