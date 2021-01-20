@@ -57,7 +57,7 @@ class AddImageToProductControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "user@email.com")
+    @WithMockUser
     @DisplayName("It should return status 403 if logged user is not the owner of the product")
     void itShouldReturnStatus403IfLoggedUserIsNotTheOwnerOfTheProduct() throws Exception {
 

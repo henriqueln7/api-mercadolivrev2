@@ -33,4 +33,20 @@ public class Opinion {
         this.product = product;
         this.opinionator = opinionator;
     }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public User getOpinionator() {
+        return opinionator;
+    }
 }

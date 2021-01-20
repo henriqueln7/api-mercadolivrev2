@@ -52,6 +52,5 @@ public class AddImageToProductController {
 
         product.addImagesUrl(imagesUrl);
         manager.merge(product);
-
     }
 }
