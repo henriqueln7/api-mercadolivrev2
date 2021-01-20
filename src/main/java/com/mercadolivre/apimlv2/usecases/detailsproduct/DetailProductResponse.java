@@ -1,4 +1,4 @@
-package com.mercadolivre.apimlv2.usecases.registerproduct;
+package com.mercadolivre.apimlv2.usecases.detailsproduct;
 
 import com.mercadolivre.apimlv2.domain.*;
 
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RegisterProductResponse {
+public class DetailProductResponse {
     public final Long id;
     public final String name;
     public final BigDecimal price;
@@ -22,7 +22,7 @@ public class RegisterProductResponse {
     public final int amountOfOpinions;
     public final double scoreAverage;
 
-    public RegisterProductResponse(Product product) {
+    public DetailProductResponse(Product product) {
         this.id = product.getId();
         this.name = product.getName();
         this.price = product.getPrice();
@@ -66,11 +66,6 @@ class OwnerResponse {
 
     public OwnerResponse(User owner) {
         this.email = owner.getLogin();
-    }
-}
-
-class QuestionResponse {
-    public QuestionResponse(Question question) {
     }
 }
 
