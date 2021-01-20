@@ -35,7 +35,7 @@ public class RegisterProductResponse {
         this.images = product.getImages().stream().map(ProductImage::getImageUrl).collect(Collectors.toList());
         this.opinions = product.getOpinions().stream().map(OpinionResponse::new).collect(Collectors.toList());
         this.amountOfOpinions = product.getOpinions().size();
-        this.scoreAverage = product.getOpinions().stream().mapToInt(Opinion::getScore).average().getAsDouble();
+        this.scoreAverage = product.getOpinions().stream().mapToInt(Opinion::getScore).average().orElse(0);
     }
 
 }
