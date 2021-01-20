@@ -20,20 +20,20 @@ import java.util.stream.Collectors;
 
 public class RegisterProductRequest {
     @NotBlank
-    private final String name;
+    public final String name;
     @NotNull
     @Positive
-    private final BigDecimal price;
+    public final BigDecimal price;
     @Positive
-    private final int amountAvailable;
+    public final int amountAvailable;
     @Size(min = 3)
     @Valid
-    private final Set<NewFeatureRequest> features;
+    public final Set<NewFeatureRequest> features;
     @NotBlank
     @Length(max = 1000)
-    private final String description;
+    public final String description;
     @NotNull
-    private final Long categoryId;
+    public final Long categoryId;
 
     public RegisterProductRequest(@NotBlank String name, @NotNull @Positive BigDecimal price, @Positive int amountAvailable, @Size(min = 3) @Valid Set<NewFeatureRequest> features, @NotBlank @Length(max = 1000) String description, @NotNull Long categoryId) {
         this.name = name;
@@ -77,9 +77,9 @@ public class RegisterProductRequest {
 
 class NewFeatureRequest {
     @NotBlank
-    private final String name;
+    public final String name;
     @NotBlank
-    private final String description;
+    public final String description;
 
     public NewFeatureRequest(@NotBlank String name, @NotBlank String description) {
         this.name = name;
