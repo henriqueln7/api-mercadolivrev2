@@ -120,5 +120,13 @@ public class Product {
         Assert.notNull(opinion, "Opinion is null #BUG");
         this.opinions.add(opinion);
     }
+
+    public boolean beatStock(@Positive int amount) {
+        if (this.amountAvailable >= amount) {
+            this.amountAvailable -= amount;
+            return true;
+        }
+        return false;
+    }
 }
 
