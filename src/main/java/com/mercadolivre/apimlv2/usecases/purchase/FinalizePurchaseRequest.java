@@ -35,4 +35,8 @@ public class FinalizePurchaseRequest {
     public int getAmount() {
         return this.amount;
     }
+
+    public PaymentGateway getPaymentGateway() {
+        return paymentGateway;
+    }
 }

@@ -122,6 +122,8 @@ public class Product {
     }
 
     public boolean beatStock(@Positive int amount) {
+        Assert.isTrue(amount > 0, "You need to pass a positive amount");
+
         if (this.amountAvailable >= amount) {
             this.amountAvailable -= amount;
             return true;
