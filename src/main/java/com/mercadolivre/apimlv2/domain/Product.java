@@ -121,11 +121,11 @@ public class Product {
         this.opinions.add(opinion);
     }
 
-    public boolean beatStock(@Positive int amount) {
-        Assert.isTrue(amount > 0, "You need to pass a positive amount");
+    public boolean beatStock(@Positive int amountToBeat) {
+        Assert.isTrue(amountToBeat > 0, "You need to pass a positive amount");
 
-        if (this.amountAvailable >= amount) {
-            this.amountAvailable -= amount;
+        if (this.amountAvailable >= amountToBeat) {
+            this.amountAvailable -= amountToBeat;
             return true;
         }
         return false;
