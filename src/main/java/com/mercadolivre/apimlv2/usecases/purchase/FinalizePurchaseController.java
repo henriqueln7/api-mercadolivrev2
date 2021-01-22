@@ -19,13 +19,14 @@ public class FinalizePurchaseController {
 
     private final ProductRepository productRepository;
     private final Mailer mailer;
+
     public FinalizePurchaseController(ProductRepository productRepository, Mailer mailer) {
         this.productRepository = productRepository;
         this.mailer = mailer;
     }
 
     @PostMapping("/purchases")
-    public ResponseEntity<String> finalizePurchase(@RequestBody @Valid FinalizePurchaseRequest request, @AuthenticationPrincipal LoggedUser loggedUser) {
+    public ResponseEntity<String> finalizePurchase(@RequestBody @Valid FinalizePurchaseRequest request, @AuthenticationPrincipal LoggedUser loggedUser, UriComponentsBuilder uriComponentsBuilder) {
 
         Optional<Product> optionalProduct = productRepository.findById(request.getProductId());
         Product product = optionalProduct.get();
@@ -38,21 +39,23 @@ public class FinalizePurchaseController {
 
             if (request.getPaymentGateway().equals(PaymentGateway.PAYPAL)) {
                 String paypalUrl = "paypal.com/{idGeradoDaCompra}?redirectUrl={urlRetornoAppPosPagamento}";
+                String redirectUrl = uriComponentsBuilder.path("/payment/?gateway=paypal").build().toString();
                 String paypalRedirect = UriComponentsBuilder.fromUriString(paypalUrl)
-                                               .buildAndExpand(purchase.getId(), "http://meuretorno.com")
+                                               .buildAndExpand(purchase.getId(), redirectUrl)
                                                .toString();
 
                 return ResponseEntity.status(HttpStatus.FOUND).header("Location", paypalRedirect).build();
             } else {
                 String pagseguroUrl = "pagseguro.com?returnId={idGeradoDaCompra}&redirectUrl={urlRetornoAppPosPagamento}";
+                String redirectUrl = uriComponentsBuilder.path("/payment/?gateway=pagseguro").build().toString();
                 String pagseguroRedirect = UriComponentsBuilder.fromPath(pagseguroUrl)
-                                                            .buildAndExpand(purchase.getId(), "http://meuretorno.com")
+                                                            .buildAndExpand(purchase.getId(), redirectUrl)
                                                             .toString();
                 return ResponseEntity.status(HttpStatus.FOUND).header("Location", pagseguroRedirect).build();
             }
 
         }
 
-        return ResponseEntity.unprocessableEntity().build();
+        return ResponseEntity.unprocessableEntity().body("No amount available");
     }
 }
