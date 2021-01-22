@@ -1,8 +1,11 @@
 package com.mercadolivre.apimlv2.domain;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Purchase {
@@ -35,5 +38,13 @@ public class Purchase {
 
     public String getId() {
         return id;
+    }
+
+    public String generatePaymentGatewayUrl(UriComponentsBuilder uriComponentsBuilder) {
+        String callbackUrl = uriComponentsBuilder.path("/payment")
+                                             .queryParam("gateway", this.paymentGateway.name().toLowerCase(Locale.ROOT))
+                                             .build()
+                                             .toString();
+        return this.paymentGateway.generatePurchasePaymentGatewayUrl(this, callbackUrl);
     }
 }

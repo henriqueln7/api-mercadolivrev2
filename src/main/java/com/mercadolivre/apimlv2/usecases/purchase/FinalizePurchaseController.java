@@ -1,6 +1,9 @@
 package com.mercadolivre.apimlv2.usecases.purchase;
 
-import com.mercadolivre.apimlv2.domain.*;
+import com.mercadolivre.apimlv2.domain.Product;
+import com.mercadolivre.apimlv2.domain.ProductRepository;
+import com.mercadolivre.apimlv2.domain.Purchase;
+import com.mercadolivre.apimlv2.domain.User;
 import com.mercadolivre.apimlv2.security.LoggedUser;
 import com.mercadolivre.apimlv2.usecases.addquestiontoproduct.Mailer;
 import org.springframework.http.HttpStatus;
@@ -34,28 +37,15 @@ public class FinalizePurchaseController {
 
         if (beatStockSuccessful) {
             mailer.sendText(product.getOwner().getLogin(), "[MercadoLivre] New purchase :)", "Hi! \n A new purchase is being made on your product " + product.getName());
+
             User buyer = loggedUser.get();
-            Purchase purchase = request.toModel(productRepository, buyer);
+            Purchase purchase = new Purchase(product, request.getAmount(), buyer, request.getPaymentGateway());
 
-            if (request.getPaymentGateway().equals(PaymentGateway.PAYPAL)) {
-                String paypalUrl = "paypal.com/{idGeradoDaCompra}?redirectUrl={urlRetornoAppPosPagamento}";
-                String redirectUrl = uriComponentsBuilder.path("/payment/?gateway=paypal").build().toString();
-                String paypalRedirect = UriComponentsBuilder.fromUriString(paypalUrl)
-                                               .buildAndExpand(purchase.getId(), redirectUrl)
-                                               .toString();
-
-                return ResponseEntity.status(HttpStatus.FOUND).header("Location", paypalRedirect).build();
-            } else {
-                String pagseguroUrl = "pagseguro.com?returnId={idGeradoDaCompra}&redirectUrl={urlRetornoAppPosPagamento}";
-                String redirectUrl = uriComponentsBuilder.path("/payment/?gateway=pagseguro").build().toString();
-                String pagseguroRedirect = UriComponentsBuilder.fromPath(pagseguroUrl)
-                                                            .buildAndExpand(purchase.getId(), redirectUrl)
-                                                            .toString();
-                return ResponseEntity.status(HttpStatus.FOUND).header("Location", pagseguroRedirect).build();
-            }
+            return ResponseEntity.status(HttpStatus.FOUND)
+                                 .header("Location", purchase.generatePaymentGatewayUrl(uriComponentsBuilder))
+                                 .build();
 
         }
-
         return ResponseEntity.unprocessableEntity().body("No amount available");
     }
 }
