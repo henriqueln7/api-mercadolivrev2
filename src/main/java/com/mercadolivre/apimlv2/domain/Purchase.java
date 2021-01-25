@@ -41,9 +41,9 @@ public class Purchase {
     }
 
     public String generatePaymentGatewayUrl(UriComponentsBuilder uriComponentsBuilder) {
-        String callbackUrl = uriComponentsBuilder.path("/payment")
+        String callbackUrl = uriComponentsBuilder.path("/payment/{purchaseId}")
                                              .queryParam("gateway", this.paymentGateway.name().toLowerCase(Locale.ROOT))
-                                             .build()
+                                             .build(this.getId())
                                              .toString();
         return this.paymentGateway.generatePurchasePaymentGatewayUrl(this, callbackUrl);
     }

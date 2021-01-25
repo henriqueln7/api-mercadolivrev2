@@ -32,6 +32,11 @@ public class FinalizePurchaseController {
     public ResponseEntity<String> finalizePurchase(@RequestBody @Valid FinalizePurchaseRequest request, @AuthenticationPrincipal LoggedUser loggedUser, UriComponentsBuilder uriComponentsBuilder) {
 
         Optional<Product> optionalProduct = productRepository.findById(request.getProductId());
+
+        if (optionalProduct.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         Product product = optionalProduct.get();
         boolean beatStockSuccessful = product.beatStock(request.getAmount());
 
@@ -41,10 +46,8 @@ public class FinalizePurchaseController {
             User buyer = loggedUser.get();
             Purchase purchase = new Purchase(product, request.getAmount(), buyer, request.getPaymentGateway());
 
-            return ResponseEntity.status(HttpStatus.FOUND)
-                                 .header("Location", purchase.generatePaymentGatewayUrl(uriComponentsBuilder))
-                                 .build();
-
+            return ResponseEntity.status(HttpStatus.OK)
+                                 .body(purchase.generatePaymentGatewayUrl(uriComponentsBuilder));
         }
         return ResponseEntity.unprocessableEntity().body("No amount available");
     }
