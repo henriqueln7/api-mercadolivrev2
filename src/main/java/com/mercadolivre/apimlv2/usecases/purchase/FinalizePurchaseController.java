@@ -14,11 +14,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
 public class FinalizePurchaseController {
+
+    @PersistenceContext
+    private EntityManager manager;
 
     private final ProductRepository productRepository;
     private final Mailer mailer;
@@ -29,6 +35,7 @@ public class FinalizePurchaseController {
     }
 
     @PostMapping("/purchases")
+    @Transactional
     public ResponseEntity<String> finalizePurchase(@RequestBody @Valid FinalizePurchaseRequest request, @AuthenticationPrincipal LoggedUser loggedUser, UriComponentsBuilder uriComponentsBuilder) {
 
         Optional<Product> optionalProduct = productRepository.findById(request.getProductId());
@@ -41,11 +48,11 @@ public class FinalizePurchaseController {
         boolean beatStockSuccessful = product.beatStock(request.getAmount());
 
         if (beatStockSuccessful) {
-            mailer.sendText(product.getOwner().getLogin(), "[MercadoLivre] New purchase :)", "Hi! \n A new purchase is being made on your product " + product.getName());
 
             User buyer = loggedUser.get();
             Purchase purchase = new Purchase(product, request.getAmount(), buyer, request.getPaymentGateway());
-
+            manager.persist(purchase);
+            mailer.sendText(product.getOwner().getLogin(), "[MercadoLivre] New purchase :)", "Hi! \n A new purchase is being made on your product " + product.getName());
             return ResponseEntity.status(HttpStatus.OK)
                                  .body(purchase.generatePaymentGatewayUrl(uriComponentsBuilder));
         }
