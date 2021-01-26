@@ -53,8 +53,9 @@ public class FinalizePurchaseController {
             Purchase purchase = new Purchase(product, request.getAmount(), buyer, request.getPaymentGateway());
             manager.persist(purchase);
             mailer.sendText(product.getOwner().getLogin(), "[MercadoLivre] New purchase :)", "Hi! \n A new purchase is being made on your product " + product.getName());
-            return ResponseEntity.status(HttpStatus.OK)
-                                 .body(purchase.generatePaymentGatewayUrl(uriComponentsBuilder));
+            return ResponseEntity.status(HttpStatus.FOUND)
+                                 .header("Location", purchase.generatePaymentGatewayUrl(uriComponentsBuilder))
+                                 .build();
         }
         return ResponseEntity.unprocessableEntity().body("No amount available");
     }
