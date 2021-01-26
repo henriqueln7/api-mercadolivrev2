@@ -14,11 +14,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductTest {
 
     private Product product;
+    public int amountAvailable;
 
     @BeforeEach
     void setUp() {
         Set<ProductFeature> features = Set.of(new ProductFeature("key1", "value1"), new ProductFeature("key2", "value2"), new ProductFeature("key3", "value3"));
-        product = new Product("Produto", BigDecimal.TEN, 10, features, "Description", new Category("Category name"), new User("user@email.com", new CleanPassword("abc123")));
+        amountAvailable = 10;
+        product = new Product("Produto", BigDecimal.TEN, amountAvailable, features, "Description", new Category("Category name"), new User("user@email.com", new CleanPassword("abc123")));
     }
 
     @Nested
@@ -35,6 +37,7 @@ class ProductTest {
         @DisplayName("It should return true if product has amount available enough to beat")
         void itShouldReturnTrueIfProductHasAmountAvailableEnoughToBeat(int amountToBeat) {
             assertTrue(product.beatStock(amountToBeat));
+            assertEquals(amountAvailable - amountToBeat, product.getAmountAvailable());
         }
 
         @ParameterizedTest
@@ -42,6 +45,7 @@ class ProductTest {
         @DisplayName("It should return false if product has no amount availabe enough to beat")
         void itShouldReturnFalseIfProductHasNoAmountAvailabeEnoughToBeat(int amountToBeat) {
             assertFalse(product.beatStock(amountToBeat));
+            assertEquals(amountAvailable, product.getAmountAvailable());
         }
     }
 
