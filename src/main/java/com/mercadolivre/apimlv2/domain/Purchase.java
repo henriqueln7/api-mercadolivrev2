@@ -1,11 +1,15 @@
 package com.mercadolivre.apimlv2.domain;
 
+import com.mercadolivre.apimlv2.usecases.purchase.PaymentAttempt;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +29,8 @@ public class Purchase {
     @NotNull @Valid
     @ManyToOne
     private Product product;
+    @OneToMany
+    private List<PaymentAttempt> paymentAttempts = new ArrayList<>();
 
     @Deprecated
     protected Purchase(){}
@@ -55,5 +61,10 @@ public class Purchase {
 
     public String generatePaymentGatewayUrl(UriComponentsBuilder uriComponentsBuilder) {
         return this.paymentGateway.generatePurchasePaymentGatewayUrl(this, uriComponentsBuilder);
+    }
+
+    public void addPaymentAttempt(@NotNull @Valid PaymentAttempt paymentAttempt) {
+        Assert.notNull(paymentAttempt, "Payment attempt is null");
+        this.paymentAttempts.add(paymentAttempt);
     }
 }
