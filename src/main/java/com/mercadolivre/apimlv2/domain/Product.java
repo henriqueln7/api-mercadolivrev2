@@ -120,5 +120,20 @@ public class Product {
         Assert.notNull(opinion, "Opinion is null #BUG");
         this.opinions.add(opinion);
     }
+
+    /**
+     * Beat stock given the amount.
+     * @param amountToBeat Amount to beat.
+     * @return true, if operation was successful. False otherwise
+     */
+    public boolean beatStock(@Positive int amountToBeat) {
+        Assert.isTrue(amountToBeat > 0, "You need to pass a positive amount");
+
+        if (this.amountAvailable >= amountToBeat) {
+            this.amountAvailable -= amountToBeat;
+            return true;
+        }
+        return false;
+    }
 }
 

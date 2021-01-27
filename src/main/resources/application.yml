@@ -6,6 +6,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/apimlv2
     username: postgres
     password: postgres
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
 jwt:
   secret: jdk02kdadnjndiawd
   expTime: 86400
