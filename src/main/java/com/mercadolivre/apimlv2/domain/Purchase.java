@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.Locale;
 import java.util.UUID;
 
 @Entity
@@ -55,10 +54,6 @@ public class Purchase {
     }
 
     public String generatePaymentGatewayUrl(UriComponentsBuilder uriComponentsBuilder) {
-        String callbackUrl = uriComponentsBuilder.path("/payment/{purchaseId}")
-                                             .queryParam("gateway", this.paymentGateway.name().toLowerCase(Locale.ROOT))
-                                             .build(this.getId())
-                                             .toString();
-        return this.paymentGateway.generatePurchasePaymentGatewayUrl(this, callbackUrl);
+        return this.paymentGateway.generatePurchasePaymentGatewayUrl(this, uriComponentsBuilder);
     }
 }
