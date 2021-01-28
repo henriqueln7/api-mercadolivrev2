@@ -11,6 +11,7 @@ public class NotaFiscalFakeController {
 
     @PostMapping("/nota-fiscal")
     public String notaFiscal(@RequestBody @Valid NotaFiscalRequest request) {
+        System.out.println(request.toString());
         return request.toString();
     }
 

@@ -11,6 +11,7 @@ public class SistemaRankingFakeController {
 
     @PostMapping("/sistema-ranking")
     public String sistemaRanking(@RequestBody @Valid SistemaRankingRequest request) {
+        System.out.println(request.toString());
         return request.toString();
     }
 }
