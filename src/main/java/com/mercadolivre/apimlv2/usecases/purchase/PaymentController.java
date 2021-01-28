@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,6 +44,12 @@ public class PaymentController {
         Purchase purchase = manager.find(Purchase.class, purchaseId);
         PaymentAttempt paymentAttempt = new PaymentAttempt(request.paymentAttemptId, request.status);
         purchase.addPaymentAttempt(paymentAttempt);
+
+        if (paymentAttempt.successful()) {
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.postForObject("http://localhost:8080/nota-fiscal", new NotaFiscalRequest(purchase.getId(), purchase.getBuyer().getId()), String.class);
+            restTemplate.postForObject("http://localhost:8080/sistema-ranking", new SistemaRankingRequest(purchase.getId(), purchase.getProduct().getOwner().getId()), String.class);
+        }
 
         return paymentAttempt.toString();
     }
