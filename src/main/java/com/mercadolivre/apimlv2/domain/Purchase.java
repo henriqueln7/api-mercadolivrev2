@@ -67,4 +67,12 @@ public class Purchase {
         Assert.notNull(paymentAttempt, "Payment attempt is null");
         this.paymentAttempts.add(paymentAttempt);
     }
+
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
 }
