@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 public class PaymentAttempt {
@@ -15,16 +16,17 @@ public class PaymentAttempt {
     private Long id;
 
     @NotBlank
-    private String paymentAttemptId;
+    private String gatewayPaymentId;
     @NotNull
     private PaymentAttemptStatus status;
+    private LocalDateTime createdAt;
 
     @Deprecated
     protected PaymentAttempt(){}
 
-    public PaymentAttempt(@NotBlank String paymentAttemptId, @NotNull PagseguroReturnStatus status) {
-        this.paymentAttemptId = paymentAttemptId;
-
+    public PaymentAttempt(@NotBlank String gatewayPaymentId, @NotNull PagseguroReturnStatus status) {
+        this.gatewayPaymentId = gatewayPaymentId;
+        this.createdAt = LocalDateTime.now();
         if (status.equals(PagseguroReturnStatus.SUCESSO)) {
             this.status = PaymentAttemptStatus.SUCCESS;
         } else {
@@ -34,7 +36,11 @@ public class PaymentAttempt {
 
     @Override
     public String toString() {
-        return "PaymentAttempt{" + "paymentAttemptId='" + paymentAttemptId + '\'' + ", status=" + status + '}';
+        return "PaymentAttempt{" + "id=" + id + ", paymentAttemptId='" + gatewayPaymentId + '\'' + ", status=" + status + ", createdAt=" + createdAt + '}';
+    }
+
+    public boolean successful() {
+        return this.status.equals(PaymentAttemptStatus.SUCCESS);
     }
 }
 

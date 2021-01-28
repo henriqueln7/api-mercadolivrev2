@@ -5,18 +5,18 @@ import javax.validation.constraints.NotNull;
 
 public class PagseguroPaymentRequest {
     @NotBlank
-    public final String paymentAttemptId;
+    public final String gatewayPaymentId;
     @NotNull
     public final PagseguroReturnStatus status;
 
-    public PagseguroPaymentRequest(@NotBlank String paymentAttemptId, @NotNull PagseguroReturnStatus status) {
-        this.paymentAttemptId = paymentAttemptId;
+    public PagseguroPaymentRequest(@NotBlank String gatewayPaymentId, @NotNull PagseguroReturnStatus status) {
+        this.gatewayPaymentId = gatewayPaymentId;
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return "PagseguroPaymentRequest{" + "paymentAttemptId='" + paymentAttemptId + '\'' + ", status=" + status + '}';
+        return "PagseguroPaymentRequest{" + "paymentAttemptId='" + gatewayPaymentId + '\'' + ", status=" + status + '}';
     }
 }
 
