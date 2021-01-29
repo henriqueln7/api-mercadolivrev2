@@ -28,7 +28,7 @@ public class PaymentController {
         binder.addValidators(new PaymentUniqueGatewayId(manager));
     }
 
-    @PostMapping("/payments/{purchaseId}")
+    @PostMapping("/pagseguro-callback/{purchaseId}")
     @Transactional
     public String payment(@PathVariable String purchaseId, @RequestBody @Valid PagseguroPaymentRequest request, UriComponentsBuilder uriComponentsBuilder) {
         Purchase purchase = manager.find(Purchase.class, purchaseId);

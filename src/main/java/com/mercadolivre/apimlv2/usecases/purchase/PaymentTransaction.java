@@ -1,9 +1,6 @@
 package com.mercadolivre.apimlv2.usecases.purchase;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -19,6 +16,7 @@ public class PaymentTransaction {
     @NotBlank
     private String gatewayPaymentId;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private PaymentTransactionStatus status;
     private LocalDateTime createdAt;
 
