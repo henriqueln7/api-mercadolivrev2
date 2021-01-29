@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-public class PaymentAttempt {
+public class PaymentTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +22,9 @@ public class PaymentAttempt {
     private LocalDateTime createdAt;
 
     @Deprecated
-    protected PaymentAttempt(){}
+    protected PaymentTransaction(){}
 
-    public PaymentAttempt(@NotBlank String gatewayPaymentId, @NotNull PagseguroReturnStatus status) {
+    public PaymentTransaction(@NotBlank String gatewayPaymentId, @NotNull PagseguroReturnStatus status) {
         this.gatewayPaymentId = gatewayPaymentId;
         this.createdAt = LocalDateTime.now();
         if (status.equals(PagseguroReturnStatus.SUCESSO)) {
@@ -36,7 +36,7 @@ public class PaymentAttempt {
 
     @Override
     public String toString() {
-        return "PaymentAttempt{" + "id=" + id + ", paymentAttemptId='" + gatewayPaymentId + '\'' + ", status=" + status + ", createdAt=" + createdAt + '}';
+        return "PaymentTransaction{" + "id=" + id + ", paymentAttemptId='" + gatewayPaymentId + '\'' + ", status=" + status + ", createdAt=" + createdAt + '}';
     }
 
     public boolean successful() {

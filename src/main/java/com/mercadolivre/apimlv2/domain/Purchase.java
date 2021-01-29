@@ -1,6 +1,6 @@
 package com.mercadolivre.apimlv2.domain;
 
-import com.mercadolivre.apimlv2.usecases.purchase.PaymentAttempt;
+import com.mercadolivre.apimlv2.usecases.purchase.PaymentTransaction;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -30,7 +30,7 @@ public class Purchase {
     @ManyToOne
     private Product product;
     @OneToMany
-    private List<PaymentAttempt> paymentAttempts = new ArrayList<>();
+    private final List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
     @Deprecated
     protected Purchase(){}
@@ -63,9 +63,9 @@ public class Purchase {
         return this.paymentGateway.generatePurchasePaymentGatewayUrl(this, uriComponentsBuilder);
     }
 
-    public void addPaymentAttempt(@NotNull @Valid PaymentAttempt paymentAttempt) {
-        Assert.notNull(paymentAttempt, "Payment attempt is null");
-        this.paymentAttempts.add(paymentAttempt);
+    public void addPaymentAttempt(@NotNull @Valid PaymentTransaction paymentTransaction) {
+        Assert.notNull(paymentTransaction, "Payment attempt is null");
+        this.paymentTransactions.add(paymentTransaction);
     }
 
     public User getBuyer() {
