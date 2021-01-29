@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class PaymentTransaction {
@@ -18,20 +19,16 @@ public class PaymentTransaction {
     @NotBlank
     private String gatewayPaymentId;
     @NotNull
-    private PaymentAttemptStatus status;
+    private PaymentTransactionStatus status;
     private LocalDateTime createdAt;
 
     @Deprecated
     protected PaymentTransaction(){}
 
-    public PaymentTransaction(@NotBlank String gatewayPaymentId, @NotNull PagseguroReturnStatus status) {
+    public PaymentTransaction(@NotBlank String gatewayPaymentId, @NotNull PaymentTransactionStatus status) {
         this.gatewayPaymentId = gatewayPaymentId;
         this.createdAt = LocalDateTime.now();
-        if (status.equals(PagseguroReturnStatus.SUCESSO)) {
-            this.status = PaymentAttemptStatus.SUCCESS;
-        } else {
-            this.status = PaymentAttemptStatus.ERROR;
-        }
+        this.status = status;
     }
 
     @Override
@@ -40,10 +37,19 @@ public class PaymentTransaction {
     }
 
     public boolean successful() {
-        return this.status.equals(PaymentAttemptStatus.SUCCESS);
+        return this.status.equals(PaymentTransactionStatus.SUCCESS);
     }
-}
 
-enum PaymentAttemptStatus {
-    SUCCESS, ERROR
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PaymentTransaction that = (PaymentTransaction) o;
+        return Objects.equals(gatewayPaymentId, that.gatewayPaymentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gatewayPaymentId);
+    }
 }

@@ -18,8 +18,19 @@ public class PagseguroPaymentRequest {
     public String toString() {
         return "PagseguroPaymentRequest{" + "paymentAttemptId='" + gatewayPaymentId + '\'' + ", status=" + status + '}';
     }
+
+    public PaymentTransaction toModel() {
+        return new PaymentTransaction(this.gatewayPaymentId, status.normalize());
+    }
 }
 
 enum PagseguroReturnStatus {
-    SUCESSO, ERRO
+    SUCESSO, ERRO;
+
+    public PaymentTransactionStatus normalize() {
+        if (this.equals(SUCESSO)) {
+            return PaymentTransactionStatus.SUCCESS;
+        }
+        return PaymentTransactionStatus.ERROR;
+    }
 }

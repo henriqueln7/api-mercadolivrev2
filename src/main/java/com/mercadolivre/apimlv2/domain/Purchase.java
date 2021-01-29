@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,6 +66,12 @@ public class Purchase {
 
     public void addPaymentAttempt(@NotNull @Valid PaymentTransaction paymentTransaction) {
         Assert.notNull(paymentTransaction, "Payment attempt is null");
+        Assert.isTrue(this.paymentTransactions.stream()
+                                              .filter(PaymentTransaction::successful)
+                                              .findAny()
+                                              .isEmpty(),
+                      "This purchase already has a successful payment!");
+//        Assert.isTrue(this.paymentTransactions.stream().filter(transaction -> transaction.equals(paymentTransaction)).findAny().isEmpty(), "This payment is already at this purchase");
         this.paymentTransactions.add(paymentTransaction);
     }
 
@@ -74,5 +81,9 @@ public class Purchase {
 
     public Product getProduct() {
         return product;
+    }
+
+    public List<PaymentTransaction> getPaymentTransactions() {
+        return Collections.unmodifiableList(paymentTransactions);
     }
 }
