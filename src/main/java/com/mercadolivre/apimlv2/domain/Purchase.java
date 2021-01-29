@@ -30,7 +30,7 @@ public class Purchase {
     @NotNull @Valid
     @ManyToOne
     private Product product;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "purchase")
     private final List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
     @Deprecated

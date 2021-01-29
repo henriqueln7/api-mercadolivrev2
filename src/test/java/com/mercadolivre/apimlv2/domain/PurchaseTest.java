@@ -38,22 +38,22 @@ class PurchaseTest {
         @Test
         @DisplayName("It should thrown exception if purchase already has a successful payment")
         void itShouldThrownExceptionIfPurchaseAlreadyHasASuccessfulPayment() {
-            purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS));
-            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentAttempt(new PaymentTransaction("abcaaaa", PaymentTransactionStatus.ERROR)));
+            purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS, purchase));
+            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentAttempt(new PaymentTransaction("abcaaaa", PaymentTransactionStatus.ERROR, purchase)));
         }
 
         @Test
         @DisplayName("It should thrown exception if purchase already has the same payment passed as parameter")
         void itShouldThrownExceptionIfPurchaseAlreadyHasTheSamePaymentPassedAsParameter() {
-            purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.ERROR));
-            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS)));
+            purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.ERROR, purchase));
+            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS, purchase)));
         }
 
         @Test
         @DisplayName("It should add paymentTransaction if is not null and the purchase has not successful payment yet")
         void itShouldAddPaymentTransactionIfIsNotNullAndThePurchaseHasNotSuccessfulPaymentYet() {
             PaymentTransaction paymentTransaction = new PaymentTransaction("abc123",
-                                                                           PaymentTransactionStatus.ERROR);
+                                                                           PaymentTransactionStatus.ERROR, purchase);
             purchase.addPaymentAttempt(paymentTransaction);
             Assertions.assertThat(purchase.getPaymentTransactions()).contains(paymentTransaction);
             Assertions.assertThat(purchase.getPaymentTransactions()).hasSize(1);

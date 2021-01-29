@@ -32,7 +32,7 @@ public class PaymentController {
     @Transactional
     public String payment(@PathVariable String purchaseId, @RequestBody @Valid PagseguroPaymentRequest request, UriComponentsBuilder uriComponentsBuilder) {
         Purchase purchase = manager.find(Purchase.class, purchaseId);
-        PaymentTransaction paymentTransaction = request.toModel();
+        PaymentTransaction paymentTransaction = request.toModel(purchase);
         purchase.addPaymentAttempt(paymentTransaction);
         manager.merge(purchase);
         if (paymentTransaction.successful()) {

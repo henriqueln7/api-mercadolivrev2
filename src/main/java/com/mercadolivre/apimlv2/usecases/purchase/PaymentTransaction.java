@@ -1,6 +1,9 @@
 package com.mercadolivre.apimlv2.usecases.purchase;
 
+import com.mercadolivre.apimlv2.domain.Purchase;
+
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -19,14 +22,17 @@ public class PaymentTransaction {
     @Enumerated(EnumType.STRING)
     private PaymentTransactionStatus status;
     private LocalDateTime createdAt;
+    @ManyToOne
+    private Purchase purchase;
 
     @Deprecated
     protected PaymentTransaction(){}
 
-    public PaymentTransaction(@NotBlank String gatewayPaymentId, @NotNull PaymentTransactionStatus status) {
+    public PaymentTransaction(@NotBlank String gatewayPaymentId, @NotNull PaymentTransactionStatus status, @NotNull @Valid Purchase purchase) {
         this.gatewayPaymentId = gatewayPaymentId;
         this.createdAt = LocalDateTime.now();
         this.status = status;
+        this.purchase = purchase;
     }
 
     @Override

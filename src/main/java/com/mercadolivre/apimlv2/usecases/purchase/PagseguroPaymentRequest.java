@@ -1,5 +1,8 @@
 package com.mercadolivre.apimlv2.usecases.purchase;
 
+import com.mercadolivre.apimlv2.domain.Purchase;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,8 +22,8 @@ public class PagseguroPaymentRequest {
         return "PagseguroPaymentRequest{" + "paymentAttemptId='" + gatewayPaymentId + '\'' + ", status=" + status + '}';
     }
 
-    public PaymentTransaction toModel() {
-        return new PaymentTransaction(this.gatewayPaymentId, status.normalize());
+    public PaymentTransaction toModel(@NotNull @Valid Purchase purchase) {
+        return new PaymentTransaction(this.gatewayPaymentId, status.normalize(), purchase);
     }
 
     /**
