@@ -30,7 +30,7 @@ public class Purchase {
     @NotNull @Valid
     @ManyToOne
     private Product product;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE)
     private final List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
     @Deprecated
@@ -71,7 +71,7 @@ public class Purchase {
                                               .findAny()
                                               .isEmpty(),
                       "This purchase already has a successful payment!");
-//        Assert.isTrue(this.paymentTransactions.stream().filter(transaction -> transaction.equals(paymentTransaction)).findAny().isEmpty(), "This payment is already at this purchase");
+        Assert.isTrue(this.paymentTransactions.stream().filter(transaction -> transaction.equals(paymentTransaction)).findAny().isEmpty(), "This payment is already at this purchase");
         this.paymentTransactions.add(paymentTransaction);
     }
 

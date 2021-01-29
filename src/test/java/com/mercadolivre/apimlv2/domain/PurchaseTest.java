@@ -43,6 +43,13 @@ class PurchaseTest {
         }
 
         @Test
+        @DisplayName("It should thrown exception if purchase already has the same payment passed as parameter")
+        void itShouldThrownExceptionIfPurchaseAlreadyHasTheSamePaymentPassedAsParameter() {
+            purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.ERROR));
+            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS)));
+        }
+
+        @Test
         @DisplayName("It should add paymentTransaction if is not null and the purchase has not successful payment yet")
         void itShouldAddPaymentTransactionIfIsNotNullAndThePurchaseHasNotSuccessfulPaymentYet() {
             PaymentTransaction paymentTransaction = new PaymentTransaction("abc123",

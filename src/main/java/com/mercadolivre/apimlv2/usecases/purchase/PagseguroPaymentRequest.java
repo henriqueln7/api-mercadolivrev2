@@ -22,6 +22,13 @@ public class PagseguroPaymentRequest {
     public PaymentTransaction toModel() {
         return new PaymentTransaction(this.gatewayPaymentId, status.normalize());
     }
+
+    /**
+     * @return gatewayPaymentId so Jackson can serialize errors properly
+     */
+    public String getGatewayPaymentId() {
+        return gatewayPaymentId;
+    }
 }
 
 enum PagseguroReturnStatus {
