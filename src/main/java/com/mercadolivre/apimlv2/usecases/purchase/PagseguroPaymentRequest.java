@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class PagseguroPaymentRequest {
+public class PagseguroPaymentRequest implements PaymentRequest {
     @NotBlank
     public final String gatewayPaymentId;
     @NotNull
@@ -22,7 +22,8 @@ public class PagseguroPaymentRequest {
         return "PagseguroPaymentRequest{" + "paymentAttemptId='" + gatewayPaymentId + '\'' + ", status=" + status + '}';
     }
 
-    public PaymentTransaction toModel(@NotNull @Valid Purchase purchase) {
+    @Override
+    public PaymentTransaction newPaymentTransaction(@NotNull @Valid Purchase purchase) {
         return new PaymentTransaction(this.gatewayPaymentId, status.normalize(), purchase);
     }
 

@@ -16,7 +16,7 @@ public class PaymentUniqueGatewayId implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return PagseguroPaymentRequest.class.isAssignableFrom(clazz);
+        return PaymentRequest.class.isAssignableFrom(clazz);
     }
 
     @Override
@@ -25,8 +25,8 @@ public class PaymentUniqueGatewayId implements Validator {
             return;
         }
 
-        PagseguroPaymentRequest request = (PagseguroPaymentRequest) target;
-        String gatewayPaymentId = request.gatewayPaymentId;
+        PaymentRequest request = (PaymentRequest) target;
+        String gatewayPaymentId = request.getGatewayPaymentId();
         List<PaymentTransaction> resultStream = manager.createQuery("SELECT p FROM PaymentTransaction p WHERE p.gatewayPaymentId = :gateway", PaymentTransaction.class)
                                                        .setParameter("gateway", gatewayPaymentId)
                                                        .getResultList();

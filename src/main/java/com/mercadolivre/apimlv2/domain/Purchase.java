@@ -64,14 +64,14 @@ public class Purchase {
         return this.paymentGateway.generatePurchasePaymentGatewayUrl(this, uriComponentsBuilder);
     }
 
-    public void addPaymentAttempt(@NotNull @Valid PaymentTransaction paymentTransaction) {
+    public void addPaymentTransaction(@NotNull @Valid PaymentTransaction paymentTransaction) {
         Assert.notNull(paymentTransaction, "Payment attempt is null");
         Assert.isTrue(this.paymentTransactions.stream()
                                               .filter(PaymentTransaction::successful)
                                               .findAny()
                                               .isEmpty(),
                       "This purchase already has a successful payment!");
-        Assert.isTrue(this.paymentTransactions.stream().filter(transaction -> transaction.equals(paymentTransaction)).findAny().isEmpty(), "This payment is already at this purchase");
+        Assert.isTrue(!this.paymentTransactions.contains(paymentTransaction), "This payment is already at this purchase");
         this.paymentTransactions.add(paymentTransaction);
     }
 

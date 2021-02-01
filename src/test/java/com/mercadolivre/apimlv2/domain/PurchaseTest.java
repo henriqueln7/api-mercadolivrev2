@@ -32,21 +32,21 @@ class PurchaseTest {
         @Test
         @DisplayName("It should thrown exception if paymentAttempt is null")
         void itShouldThrownExceptionIfPaymentAttemptIsNull() {
-            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentAttempt(null));
+            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentTransaction(null));
         }
 
         @Test
         @DisplayName("It should thrown exception if purchase already has a successful payment")
         void itShouldThrownExceptionIfPurchaseAlreadyHasASuccessfulPayment() {
-            purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS, purchase));
-            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentAttempt(new PaymentTransaction("abcaaaa", PaymentTransactionStatus.ERROR, purchase)));
+            purchase.addPaymentTransaction(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS, purchase));
+            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentTransaction(new PaymentTransaction("abcaaaa", PaymentTransactionStatus.ERROR, purchase)));
         }
 
         @Test
         @DisplayName("It should thrown exception if purchase already has the same payment passed as parameter")
         void itShouldThrownExceptionIfPurchaseAlreadyHasTheSamePaymentPassedAsParameter() {
-            purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.ERROR, purchase));
-            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentAttempt(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS, purchase)));
+            purchase.addPaymentTransaction(new PaymentTransaction("abc123", PaymentTransactionStatus.ERROR, purchase));
+            assertThrows(IllegalArgumentException.class, () -> purchase.addPaymentTransaction(new PaymentTransaction("abc123", PaymentTransactionStatus.SUCCESS, purchase)));
         }
 
         @Test
@@ -54,7 +54,7 @@ class PurchaseTest {
         void itShouldAddPaymentTransactionIfIsNotNullAndThePurchaseHasNotSuccessfulPaymentYet() {
             PaymentTransaction paymentTransaction = new PaymentTransaction("abc123",
                                                                            PaymentTransactionStatus.ERROR, purchase);
-            purchase.addPaymentAttempt(paymentTransaction);
+            purchase.addPaymentTransaction(paymentTransaction);
             Assertions.assertThat(purchase.getPaymentTransactions()).contains(paymentTransaction);
             Assertions.assertThat(purchase.getPaymentTransactions()).hasSize(1);
         }

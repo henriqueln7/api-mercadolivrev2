@@ -5,10 +5,7 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,7 +23,7 @@ public class Product {
     private String name;
     @NotNull @Positive
     private BigDecimal price;
-    @Positive
+    @PositiveOrZero
     private int amountAvailable;
     @Size(min = 3) @Valid
     @OneToMany(cascade = CascadeType.PERSIST)
