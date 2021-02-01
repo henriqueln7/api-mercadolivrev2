@@ -8,10 +8,8 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Purchase {
@@ -85,5 +83,17 @@ public class Purchase {
 
     public List<PaymentTransaction> getPaymentTransactions() {
         return Collections.unmodifiableList(paymentTransactions);
+    }
+
+    private Set<PaymentTransaction> successfulPayments() {
+        Set<PaymentTransaction> successfulPayments = this.paymentTransactions.stream()
+                                                                  .filter(PaymentTransaction::successful)
+                                                                  .collect(Collectors.toSet());
+        Assert.isTrue(successfulPayments.size() <= 1, "You should not have more than one successful payment at this purchase");
+        return successfulPayments;
+    }
+
+    public boolean successful() {
+        return !this.successfulPayments().isEmpty();
     }
 }

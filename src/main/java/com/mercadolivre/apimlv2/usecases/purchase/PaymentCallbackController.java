@@ -1,7 +1,6 @@
 package com.mercadolivre.apimlv2.usecases.purchase;
 
 import com.mercadolivre.apimlv2.domain.Purchase;
-import com.mercadolivre.apimlv2.usecases.addquestiontoproduct.Mailer;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -10,19 +9,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 public class PaymentCallbackController {
 
-    private final List<EventsPurchaseSuccessful> eventsPurchaseSuccessful;
-    private final Mailer mailer;
     @PersistenceContext
     private EntityManager manager;
 
-    public PaymentCallbackController(Mailer mailer, List<EventsPurchaseSuccessful> eventsPurchaseSuccessful) {
-        this.mailer = mailer;
-        this.eventsPurchaseSuccessful = eventsPurchaseSuccessful;
+    private final EventsNewPaymentTransaction eventsNewPaymentTransaction;
+
+    public PaymentCallbackController(EventsNewPaymentTransaction eventsNewPaymentTransaction) {
+        this.eventsNewPaymentTransaction = eventsNewPaymentTransaction;
     }
 
     @InitBinder
@@ -51,12 +48,7 @@ public class PaymentCallbackController {
         PaymentTransaction paymentTransaction = request.newPaymentTransaction(purchase);
         purchase.addPaymentTransaction(paymentTransaction);
         manager.merge(purchase);
-        if (paymentTransaction.successful()) {
-            eventsPurchaseSuccessful.forEach(event -> event.execute(purchase));
-        } else {
-            mailer.sendText(purchase.getBuyer()
-                                    .getLogin(), "[API MercadoLivre] Payment has failed", "Try again: " + purchase.generatePaymentGatewayUrl(uriComponentsBuilder));
-        }
+        eventsNewPaymentTransaction.execute(purchase, uriComponentsBuilder);
         return paymentTransaction;
     }
 

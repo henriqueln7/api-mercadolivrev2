@@ -1,10 +1,10 @@
 package com.mercadolivre.apimlv2.usecases.purchase;
 
 import com.mercadolivre.apimlv2.domain.Purchase;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-@Component
+@Service
 public class SendSistemaRanking implements EventsPurchaseSuccessful {
     @Override
     public void execute(Purchase purchase) {
