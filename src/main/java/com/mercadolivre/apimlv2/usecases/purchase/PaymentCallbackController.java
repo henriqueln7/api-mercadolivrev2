@@ -29,18 +29,14 @@ public class PaymentCallbackController {
 
     @PostMapping("/pagseguro-callback/{purchaseId}")
     @Transactional
-    public String payment(@PathVariable String purchaseId, @RequestBody @Valid PagseguroPaymentRequest request, UriComponentsBuilder uriComponentsBuilder) {
-        PaymentTransaction paymentTransaction = processPaymentTransaction(purchaseId, request, uriComponentsBuilder);
-
-        return paymentTransaction.toString();
+    public void payment(@PathVariable String purchaseId, @RequestBody @Valid PagseguroPaymentRequest request, UriComponentsBuilder uriComponentsBuilder) {
+        processPaymentTransaction(purchaseId, request, uriComponentsBuilder);
     }
 
     @PostMapping("/paypal-callback/{purchaseId}")
     @Transactional
-    public String paypal(@PathVariable("purchaseId") String purchaseId, @RequestBody @Valid PaypalPaymentRequest request, UriComponentsBuilder uriComponentsBuilder) {
-        PaymentTransaction paymentTransaction = processPaymentTransaction(purchaseId, request, uriComponentsBuilder);
-
-        return paymentTransaction.toString();
+    public void paypal(@PathVariable("purchaseId") String purchaseId, @RequestBody @Valid PaypalPaymentRequest request, UriComponentsBuilder uriComponentsBuilder) {
+        processPaymentTransaction(purchaseId, request, uriComponentsBuilder);
     }
 
     private PaymentTransaction processPaymentTransaction(String purchaseId, PaymentRequest request, UriComponentsBuilder uriComponentsBuilder) {

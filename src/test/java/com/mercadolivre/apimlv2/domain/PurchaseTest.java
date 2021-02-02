@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PurchaseTest {
 
@@ -59,5 +59,30 @@ class PurchaseTest {
             Assertions.assertThat(purchase.getPaymentTransactions()).hasSize(1);
         }
     }
+
+    @Nested
+    class Successful {
+        @Test
+        @DisplayName("It should be a successful purchase if has a transaction that is successful")
+        void itShouldBeASuccessfulPurchaseIfHasATransactionThatIsSuccessful() {
+            purchase.addPaymentTransaction(new PaymentTransaction("1", PaymentTransactionStatus.SUCCESS, purchase));
+
+            assertTrue(purchase.successful());
+        }
+
+        @Test
+        @DisplayName("It should not be a successful purchase if does not have a transaction successful")
+        void itShouldNotBeASuccessfulPurchaseIfDoesNotHaveATransactionSuccessful() {
+            purchase.addPaymentTransaction(new PaymentTransaction("1", PaymentTransactionStatus.ERROR, purchase));
+            assertFalse(purchase.successful());
+        }
+
+        @Test
+        @DisplayName("It should not be a successful purchase if has no transactions")
+        void itShouldNotBeASuccessfulPurchaseIfHasNoTransactions() {
+            assertFalse(purchase.successful());
+        }
+    }
+
 
 }
