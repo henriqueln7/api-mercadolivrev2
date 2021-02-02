@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class SendSistemaRanking implements EventsPurchaseSuccessful {
+public class SendSistemaRanking implements EventPurchaseSuccessful {
     @Override
     public void execute(Purchase purchase) {
         RestTemplate restTemplate = new RestTemplate();
