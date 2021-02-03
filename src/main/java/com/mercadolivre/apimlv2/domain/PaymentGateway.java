@@ -18,9 +18,9 @@ public enum PaymentGateway {
     }
 
     public String generatePurchasePaymentGatewayUrl(Purchase purchase, UriComponentsBuilder uriComponentsBuilder) {
-        String callbackUrl = uriComponentsBuilder.replacePath("/payment/{purchaseId}")
-                                                 .queryParam("gateway", this.name().toLowerCase(Locale.ROOT))
-                                                 .build(purchase.getId())
+        String gatewayName = this.name().toLowerCase(Locale.ROOT);
+        String callbackUrl = uriComponentsBuilder.replacePath("/{gatewayName}-callback/{purchaseId}")
+                                                 .build(gatewayName, purchase.getId())
                                                  .toString();
         return UriComponentsBuilder.fromUriString(this.redirectUrl)
                             .buildAndExpand(purchase.getId(), callbackUrl)

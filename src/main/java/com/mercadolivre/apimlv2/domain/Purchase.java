@@ -1,12 +1,15 @@
 package com.mercadolivre.apimlv2.domain;
 
+import com.mercadolivre.apimlv2.usecases.purchase.PaymentTransaction;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Purchase {
@@ -25,6 +28,8 @@ public class Purchase {
     @NotNull @Valid
     @ManyToOne
     private Product product;
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "purchase")
+    private final List<PaymentTransaction> paymentTransactions = new ArrayList<>();
 
     @Deprecated
     protected Purchase(){}
@@ -55,5 +60,40 @@ public class Purchase {
 
     public String generatePaymentGatewayUrl(UriComponentsBuilder uriComponentsBuilder) {
         return this.paymentGateway.generatePurchasePaymentGatewayUrl(this, uriComponentsBuilder);
+    }
+
+    public void addPaymentTransaction(@NotNull @Valid PaymentTransaction paymentTransaction) {
+        Assert.notNull(paymentTransaction, "Payment attempt is null");
+        Assert.isTrue(this.paymentTransactions.stream()
+                                              .filter(PaymentTransaction::successful)
+                                              .findAny()
+                                              .isEmpty(),
+                      "This purchase already has a successful payment!");
+        Assert.isTrue(!this.paymentTransactions.contains(paymentTransaction), "This payment is already at this purchase");
+        this.paymentTransactions.add(paymentTransaction);
+    }
+
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public List<PaymentTransaction> getPaymentTransactions() {
+        return Collections.unmodifiableList(paymentTransactions);
+    }
+
+    private Set<PaymentTransaction> successfulPayments() {
+        Set<PaymentTransaction> successfulPayments = this.paymentTransactions.stream()
+                                                                  .filter(PaymentTransaction::successful)
+                                                                  .collect(Collectors.toSet());
+        Assert.isTrue(successfulPayments.size() <= 1, "You should not have more than one successful payment at this purchase");
+        return successfulPayments;
+    }
+
+    public boolean successful() {
+        return !this.successfulPayments().isEmpty();
     }
 }
