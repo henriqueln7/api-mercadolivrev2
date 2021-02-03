@@ -1,6 +1,5 @@
 package com.mercadolivre.apimlv2.domain;
 
-import com.mercadolivre.apimlv2.usecases.purchase.PaymentTransaction;
 import io.jsonwebtoken.lang.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 

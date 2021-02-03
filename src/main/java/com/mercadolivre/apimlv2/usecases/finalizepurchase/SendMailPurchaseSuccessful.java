@@ -1,7 +1,7 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.usecases.finalizepurchase;
 
 import com.mercadolivre.apimlv2.domain.Purchase;
-import com.mercadolivre.apimlv2.usecases.addquestiontoproduct.Mailer;
+import com.mercadolivre.apimlv2.shared.mail.Mailer;
 import org.springframework.stereotype.Service;
 
 @Service

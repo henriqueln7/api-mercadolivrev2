@@ -1,4 +1,4 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.usecases.finalizepurchase;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolivre.apimlv2.domain.*;

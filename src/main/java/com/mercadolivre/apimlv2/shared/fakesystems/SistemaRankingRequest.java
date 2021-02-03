@@ -1,4 +1,4 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.shared.fakesystems;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

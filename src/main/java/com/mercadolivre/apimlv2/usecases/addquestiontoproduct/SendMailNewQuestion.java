@@ -2,6 +2,7 @@ package com.mercadolivre.apimlv2.usecases.addquestiontoproduct;
 
 import com.mercadolivre.apimlv2.domain.Question;
 import com.mercadolivre.apimlv2.domain.User;
+import com.mercadolivre.apimlv2.shared.mail.Mailer;
 import org.springframework.stereotype.Service;
 
 @Service

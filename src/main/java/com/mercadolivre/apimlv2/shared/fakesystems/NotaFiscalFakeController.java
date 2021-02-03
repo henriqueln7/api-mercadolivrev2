@@ -1,4 +1,4 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.shared.fakesystems;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

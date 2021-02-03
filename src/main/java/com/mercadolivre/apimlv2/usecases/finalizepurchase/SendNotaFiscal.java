@@ -1,6 +1,7 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.usecases.finalizepurchase;
 
 import com.mercadolivre.apimlv2.domain.Purchase;
+import com.mercadolivre.apimlv2.shared.fakesystems.NotaFiscalRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

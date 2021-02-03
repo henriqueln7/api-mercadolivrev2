@@ -1,7 +1,6 @@
 package com.mercadolivre.apimlv2.domain;
 
-import com.mercadolivre.apimlv2.usecases.purchase.PaymentTransaction;
-import com.mercadolivre.apimlv2.usecases.purchase.PaymentTransactionStatus;
+import com.mercadolivre.apimlv2.usecases.finalizepurchase.PaymentTransactionStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,11 +1,11 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.usecases.finalizepurchase;
 
 import com.mercadolivre.apimlv2.domain.Product;
 import com.mercadolivre.apimlv2.domain.ProductRepository;
 import com.mercadolivre.apimlv2.domain.Purchase;
 import com.mercadolivre.apimlv2.domain.User;
 import com.mercadolivre.apimlv2.security.LoggedUser;
-import com.mercadolivre.apimlv2.usecases.addquestiontoproduct.Mailer;
+import com.mercadolivre.apimlv2.shared.mail.Mailer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

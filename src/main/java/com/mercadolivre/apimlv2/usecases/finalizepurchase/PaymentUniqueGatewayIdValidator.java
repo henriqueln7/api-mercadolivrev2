@@ -1,16 +1,17 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.usecases.finalizepurchase;
 
+import com.mercadolivre.apimlv2.domain.PaymentTransaction;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class PaymentUniqueGatewayId implements Validator {
+public class PaymentUniqueGatewayIdValidator implements Validator {
 
     private final EntityManager manager;
 
-    public PaymentUniqueGatewayId(EntityManager manager) {
+    public PaymentUniqueGatewayIdValidator(EntityManager manager) {
         this.manager = manager;
     }
 

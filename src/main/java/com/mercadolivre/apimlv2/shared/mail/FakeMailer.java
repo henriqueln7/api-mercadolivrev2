@@ -1,4 +1,4 @@
-package com.mercadolivre.apimlv2.usecases.addquestiontoproduct;
+package com.mercadolivre.apimlv2.shared.mail;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;

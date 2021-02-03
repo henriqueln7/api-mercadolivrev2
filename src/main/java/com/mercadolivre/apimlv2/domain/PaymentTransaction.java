@@ -1,6 +1,6 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.domain;
 
-import com.mercadolivre.apimlv2.domain.Purchase;
+import com.mercadolivre.apimlv2.usecases.finalizepurchase.PaymentTransactionStatus;
 
 import javax.persistence.*;
 import javax.validation.Valid;

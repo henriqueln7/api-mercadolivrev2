@@ -1,5 +1,6 @@
-package com.mercadolivre.apimlv2.usecases.purchase;
+package com.mercadolivre.apimlv2.usecases.finalizepurchase;
 
+import com.mercadolivre.apimlv2.domain.PaymentTransaction;
 import com.mercadolivre.apimlv2.domain.Purchase;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class PaymentCallbackController {
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(new PaymentUniqueGatewayId(manager));
+        binder.addValidators(new PaymentUniqueGatewayIdValidator(manager));
     }
 
     @PostMapping("/pagseguro-callback/{purchaseId}")
