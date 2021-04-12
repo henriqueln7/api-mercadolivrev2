@@ -54,7 +54,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/nota-fiscal").permitAll()
                     .antMatchers("/sistema-ranking").permitAll()
                     .antMatchers("/auth/**").permitAll()
-                    .antMatchers("/api-docs","/v2/api-docs", "/swagger-ui", "/swagger-ui.html").permitAll()
+                    .antMatchers("/swagger-resources/**",
+                                 "/swagger-ui.html",
+                                 "/v2/api-docs",
+                                 "/webjars/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .cors()
