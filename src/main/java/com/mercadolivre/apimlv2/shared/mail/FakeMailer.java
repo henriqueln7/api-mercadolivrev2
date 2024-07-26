@@ -1,12 +1,12 @@
 package com.mercadolivre.apimlv2.shared.mail;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 
 @Component
-@Primary
+@Profile("dev")
 public class FakeMailer implements Mailer {
     @Override
     public void sendText(String to, String subject, String body) {

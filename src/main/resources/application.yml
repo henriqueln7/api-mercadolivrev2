@@ -13,3 +13,7 @@ spring:
 jwt:
   secret: jdk02kdadnjndiawd
   expTime: 86400
+
+sendgrid:
+  api:
+    key: YOUR_SENDGRID_API_KEY
